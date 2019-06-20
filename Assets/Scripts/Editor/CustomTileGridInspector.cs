@@ -1,10 +1,10 @@
+using Tile;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.WSA;
 
 namespace Editor {
 	[CustomEditor(typeof(TileGrid))]
-	public class CustomGridInspector : UnityEditor.Editor {
+	public class CustomTileGridInspector : UnityEditor.Editor {
 		public override void OnInspectorGUI() {
 			DrawDefaultInspector();
 
@@ -16,7 +16,7 @@ namespace Editor {
 			}
 
             if (GUILayout.Button("Destroy")) {
-	            grid.DestroyGrid(true);
+	            grid.DestroyGrid();
             }
             GUILayout.EndHorizontal();
 		}
