@@ -14,16 +14,22 @@ namespace Tile {
 			this.grid = grid;
 			
 			// Set initial position (relative to parent grid).
-			// Position is determined by this tile's x and z index in the grid, multiplied by half the tilesize so it
-			// ends up in between four corner points. YOffset is the offset on the y axis relative to the parent transform
-			transform.localPosition = new Vector3(x + .5f * grid.TileSize, grid.YOffset, z +.5f * grid.TileSize);
+			UpdatePosition();
 		}
 
-		public void OnHoverEnter(float hoverStrength) { 
+		public void UpdatePosition() {
+			// Position is determined by this tile's x and z index in the grid, multiplied by half the tilesize so it
+			// ends up in between four corner points. YOffset is the offset on the y axis relative to the parent transform
+			transform.localPosition = new Vector3((gridPosX + .5f) * grid.TileSize, grid.YOffset, (gridPosZ +.5f) * grid.TileSize);
+		}
+
+		public void OnHoverEnter(float hoverStrength) {
+			// Apply hover effect
 			SetHover(hoverStrength);
 		}
 
 		public void OnHoverExit() {
+			// Remove hover effect
 			SetHover(0);
 		}
 

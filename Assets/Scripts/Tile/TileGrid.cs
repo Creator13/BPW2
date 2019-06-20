@@ -31,18 +31,16 @@ namespace Tile {
 					grid[x, z] = Instantiate(standardTilePrefab);
 					// Make child of grid root
 					grid[x, z].transform.parent = transform;
-					
+
 					// Initialize the object at it's correct position
 					grid[x, z].Initialize(x, z, this);
 					// Set the color (for testing in alternating pattern) TODO
-					grid[x, z].SetColor((x * gridSizeZ + z) % 2 == 0 ? Color.red : Color.blue);
+					grid[x, z].SetColor(x % 2 == 0 && z % 2 == 0 || x % 2 == 1 && z % 2 == 1 ? Color.red : Color.blue);
 				}
 			}
 		}
 
 		public void DestroyGrid() {
-			if (grid == null) return;
-
 			// Destroy all children that have a BaseTile component attached
 			foreach (BaseTile tile in GetComponentsInChildren<BaseTile>()) {
 				// Use DestroyImmediate in edit mode because you can't use destroy
@@ -55,18 +53,56 @@ namespace Tile {
 			}
 		}
 
-		private void OnDrawGizmos() {
-			// Draw grid of spheres at corner points of grid
-			for (int x = 0; x < gridSizeX + 1; x++) {
-				for (int z = 0; z < gridSizeZ + 1; z++) {
-					Gizmos.color = Color.black;
-					Gizmos.DrawSphere(GetRelativeCoords(new Vector3(x, 0, z)), 0.05f);
-				}
+		public void UpdateTilePositions() {
+			if (grid == null) return;
+
+			foreach (BaseTile tile in grid) {
+				tile.UpdatePosition();
 			}
 		}
 
 		public Vector3 GetRelativeCoords(Vector3 pos) {
+			pos *= TileSize;
 			return pos + transform.position;
+		}
+		
+		private void OnDrawGizmos() {
+			// Draw grid of spheres at corner points of grid
+			for (int x = 0; x < gridSizeX + 1; x++) {
+				for (int z = 0; z < gridSizeZ + 1; z++) {
+					// Draw lines
+					Gizmos.color = Color.gray;
+					// Draw in both dir
+					if (x < gridSizeX && z < gridSizeZ) {
+						Gizmos.DrawLine(
+							GetRelativeCoords(new Vector3(x, 0, z)),
+							GetRelativeCoords(new Vector3(x + 1, 0, z))
+						);
+						Gizmos.DrawLine(
+							GetRelativeCoords(new Vector3(x, 0, z)),
+							GetRelativeCoords(new Vector3(x, 0, z + 1))
+						);
+					}
+					// Draw only in x dir
+					else if (x < gridSizeX && z >= gridSizeZ) {
+						Gizmos.DrawLine(
+							GetRelativeCoords(new Vector3(x, 0, z)),
+							GetRelativeCoords(new Vector3(x + 1, 0, z))
+						);
+					}
+					// Draw only in z dir
+					else if (x >= gridSizeX && z < gridSizeZ) {
+						Gizmos.DrawLine(
+							GetRelativeCoords(new Vector3(x, 0, z)),
+							GetRelativeCoords(new Vector3(x, 0, z + 1))
+						);
+					}
+
+					// Draw spheres
+					Gizmos.color = Color.black;
+					Gizmos.DrawSphere(GetRelativeCoords(new Vector3(x, 0, z)), 0.05f);
+				}
+			}
 		}
 	}
 }
