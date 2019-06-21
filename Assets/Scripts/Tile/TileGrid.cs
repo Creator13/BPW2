@@ -106,8 +106,12 @@ namespace Tile {
 
 		public void ReplaceTile(BaseTile tile, BaseTile newTile) {
 			try {
-				Destroy(grid[tile.X, tile.Z].gameObject);
+				BaseTile oldTile = grid[tile.X, tile.Z];
+//				oldTile.enabled = false;
+				
 				CreateTile(tile.X, tile.Z, newTile);
+				
+				Destroy(oldTile.gameObject);
 			}
 			catch (IndexOutOfRangeException e) {
 				Debug.LogError("Tile to be replaced was out of range");
