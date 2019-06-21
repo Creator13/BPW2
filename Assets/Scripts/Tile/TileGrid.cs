@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Tile {
 	public class TileGrid : MonoBehaviour {
@@ -25,19 +29,24 @@ namespace Tile {
 			// Initialize grid array
 			grid = new BaseTile[gridSizeX, gridSizeZ];
 
-			for (int i, x = 0; x < gridSizeX; x++) {
-				for (int z = 0; z < gridSizeZ; z++) {
-					// Generate new tile at current grid point
-					grid[x, z] = Instantiate(standardTilePrefab);
-					// Make child of grid root
-					grid[x, z].transform.parent = transform;
+			// Generate the random index of the source tile
+			int sourceIndex = Random.Range(0, gridSizeX * gridSizeZ);
 
-					// Initialize the object at it's correct position
-					grid[x, z].Initialize(x, z, this);
-					// Set the color (for testing in alternating pattern) TODO
-					grid[x, z].SetColor(x % 2 == 0 && z % 2 == 0 || x % 2 == 1 && z % 2 == 1 ? Color.red : Color.blue);
+			for (int i = 0, x = 0; x < gridSizeX; x++) {
+				for (int z = 0; z < gridSizeZ; z++, i++) {
+					// Generate new tile at current grid point
+					CreateTile(x, z, i == sourceIndex ? sourceTilePrefab : standardTilePrefab);
 				}
 			}
+		}
+
+		private void CreateTile(int x, int z, BaseTile prefab) {
+			// Generate new tile at current grid point
+			grid[x, z] = Instantiate(prefab);
+			// Make tile child of grid root
+			grid[x, z].transform.parent = transform;
+			// Initialize the object at its correct position
+			grid[x, z].Initialize(x, z, this);
 		}
 
 		public void DestroyGrid() {
@@ -61,11 +70,50 @@ namespace Tile {
 			}
 		}
 
-		public Vector3 GetRelativeCoords(Vector3 pos) {
+		private Vector3 GetRelativeCoords(Vector3 pos) {
 			pos *= TileSize;
 			return pos + transform.position;
 		}
-		
+
+		public BaseTile[] GetSurroundingTiles(int x, int z) {
+			List<BaseTile> tiles = new List<BaseTile>();
+
+			if (x + 1 < gridSizeX) {
+				tiles.Add(grid[x + 1, z]);
+			}
+
+			if (x - 1 >= 0) {
+				tiles.Add(grid[x - 1, z]);
+			}
+
+			if (z + 1 < gridSizeX) {
+				tiles.Add(grid[x, z + 1]);
+			}
+
+			if (z - 1 >= 0) {
+				tiles.Add(grid[x, z - 1]);
+			}
+
+			return tiles.ToArray();
+		}
+
+		public bool TileHasSurroundingType<T>(int x, int z) {
+			BaseTile[] tiles = GetSurroundingTiles(x, z);
+
+			return tiles.Any(tile => tile.GetType() == typeof(T));
+
+		}
+
+		public void ReplaceTile(BaseTile tile, BaseTile newTile) {
+			try {
+				Destroy(grid[tile.X, tile.Z].gameObject);
+				CreateTile(tile.X, tile.Z, newTile);
+			}
+			catch (IndexOutOfRangeException e) {
+				Debug.LogError("Tile to be replaced was out of range");
+			}
+		}
+
 		private void OnDrawGizmos() {
 			// Draw grid of spheres at corner points of grid
 			for (int x = 0; x < gridSizeX + 1; x++) {

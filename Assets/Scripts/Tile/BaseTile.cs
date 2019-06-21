@@ -3,24 +3,28 @@ using UnityEngine;
 namespace Tile {
 	public class BaseTile : MonoBehaviour {
 		private int gridPosX, gridPosZ = -1;
-		private TileGrid grid;
+		public int X => gridPosX;
+		public int Z => gridPosZ;
+		public TileGrid Grid { get; protected set; }
 	
-		public void Initialize(int x, int z, TileGrid grid) {
+		public virtual void Initialize(int x, int z, TileGrid grid) {
 			OnHoverExit();
 			
-			// Save this tile's x and z index in the grid and save reference to parent grid
+			// Save this tile's x and z index in the Grid and save reference to parent Grid
 			gridPosX = x;
 			gridPosZ = z;
-			this.grid = grid;
+			Grid = grid;
 			
-			// Set initial position (relative to parent grid).
+			// Set initial position (relative to parent Grid).
 			UpdatePosition();
+			
+//			SetColor(x % 2 == 0 && z % 2 == 0 || x % 2 == 1 && z % 2 == 1 ? Color.red : Color.blue);
 		}
 
 		public void UpdatePosition() {
-			// Position is determined by this tile's x and z index in the grid, multiplied by half the tilesize so it
+			// Position is determined by this tile's x and z index in the Grid, multiplied by half the tilesize so it
 			// ends up in between four corner points. YOffset is the offset on the y axis relative to the parent transform
-			transform.localPosition = new Vector3((gridPosX + .5f) * grid.TileSize, grid.YOffset, (gridPosZ +.5f) * grid.TileSize);
+			transform.localPosition = new Vector3((gridPosX + .5f) * Grid.TileSize, Grid.YOffset, (gridPosZ +.5f) * Grid.TileSize);
 		}
 
 		public void OnHoverEnter(float hoverStrength) {
@@ -53,6 +57,10 @@ namespace Tile {
 			// _BaseColor is the HDRP lit shader's albedo color property
 			matPropBlock.SetColor("_BaseColor", c);
 			rend.SetPropertyBlock(matPropBlock);
+		}
+
+		public bool SurroundedByType<T>() {
+			return Grid.TileHasSurroundingType<T>(X, Z);
 		}
 	}
 } 

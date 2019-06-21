@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7133145443752814219}
   - component: {fileID: 149164291657804328}
   - component: {fileID: 1958114883834139532}
-  - component: {fileID: 5569751265862313519}
+  - component: {fileID: 5927937490616690058}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: SoruceTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5569751265862313519
+--- !u!114 &5927937490616690058
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,6 +101,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7282185178579514492}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 412f643c8dbe4539b8275954f233849d, type: 3}
+  m_Script: {fileID: 11500000, guid: 91ce60a03976f1f488cd3c38ecb92495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waterAmt: 3
