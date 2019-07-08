@@ -21,6 +21,18 @@ namespace Tile {
 //			SetColor(x % 2 == 0 && z % 2 == 0 || x % 2 == 1 && z % 2 == 1 ? Color.red : Color.blue);
 		}
 
+		public virtual void OnClick() {
+			if ((SurroundedByType<RiverTile>() || SurroundedByType<SourceTile>())
+			    && GetType() != typeof(SourceTile)) {
+				TileGrid grid = Grid;
+
+				if (grid.Source.AvailableRivers > 0) {
+					RiverTile riverTile = grid.ReplaceTile(this, Grid.RiverTilePrefab) as RiverTile;
+					grid.Source.AddRiver(riverTile);
+				}
+			}
+		}
+
 		public void UpdatePosition() {
 			// Position is determined by this tile's x and z index in the Grid, multiplied by half the tilesize so it
 			// ends up in between four corner points. YOffset is the offset on the y axis relative to the parent transform

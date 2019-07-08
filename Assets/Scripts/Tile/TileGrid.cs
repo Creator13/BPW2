@@ -8,6 +8,8 @@ namespace Tile {
 	public class TileGrid : MonoBehaviour {
 		[SerializeField] private BaseTile standardTilePrefab;
 		[SerializeField] private SourceTile sourceTilePrefab;
+		[SerializeField] private RiverTile riverTilePrefab;
+		public RiverTile RiverTilePrefab => riverTilePrefab;
 
 		[SerializeField] private int gridSizeX = 5;
 		[SerializeField] private int gridSizeZ = 5;
@@ -17,6 +19,8 @@ namespace Tile {
 		public float TileSize => tileSize;
 		[SerializeField] private float yOffset = -0.5f;
 		public float YOffset => yOffset;
+		
+		public SourceTile Source { get; private set; }
 
 		private void Start() {
 			Generate();
@@ -30,23 +34,33 @@ namespace Tile {
 			grid = new BaseTile[gridSizeX, gridSizeZ];
 
 			// Generate the random index of the source tile
+			// TODO not at edges/corners? Might fuck up balancing
 			int sourceIndex = Random.Range(0, gridSizeX * gridSizeZ);
 
 			for (int i = 0, x = 0; x < gridSizeX; x++) {
 				for (int z = 0; z < gridSizeZ; z++, i++) {
 					// Generate new tile at current grid point
-					CreateTile(x, z, i == sourceIndex ? sourceTilePrefab : standardTilePrefab);
+					if (i == sourceIndex) {
+						// Generate one source tile at the randomly generated index
+						Source = (SourceTile) CreateTile(x, z, sourceTilePrefab);
+					}
+					else {
+						// Generate standard tile
+						CreateTile(x, z, standardTilePrefab);
+					}
 				}
 			}
 		}
 
-		private void CreateTile(int x, int z, BaseTile prefab) {
+		private BaseTile CreateTile(int x, int z, BaseTile prefab) {
 			// Generate new tile at current grid point
 			grid[x, z] = Instantiate(prefab);
 			// Make tile child of grid root
 			grid[x, z].transform.parent = transform;
 			// Initialize the object at its correct position
 			grid[x, z].Initialize(x, z, this);
+
+			return grid[x, z];
 		}
 
 		public void DestroyGrid() {
@@ -101,20 +115,22 @@ namespace Tile {
 			BaseTile[] tiles = GetSurroundingTiles(x, z);
 
 			return tiles.Any(tile => tile.GetType() == typeof(T));
-
 		}
 
-		public void ReplaceTile(BaseTile tile, BaseTile newTile) {
+		public BaseTile ReplaceTile(BaseTile tile, BaseTile newTile) {
 			try {
 				BaseTile oldTile = grid[tile.X, tile.Z];
 //				oldTile.enabled = false;
 				
-				CreateTile(tile.X, tile.Z, newTile);
+				BaseTile bt = CreateTile(tile.X, tile.Z, newTile);
 				
 				Destroy(oldTile.gameObject);
+
+				return bt;
 			}
 			catch (IndexOutOfRangeException e) {
 				Debug.LogError("Tile to be replaced was out of range");
+				return null;
 			}
 		}
 

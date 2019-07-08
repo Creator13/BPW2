@@ -5,8 +5,6 @@ using UnityEngine;
 public class MouseHandler : UnityEngine.MonoBehaviour {
 	private Camera cam;
 
-	[SerializeField] private RiverTile riverTile;
-
 	[SerializeField, Range(0, 1)] private float hoverStrength = 0.7f;
 
 	private BaseTile currentHover;
@@ -60,10 +58,6 @@ public class MouseHandler : UnityEngine.MonoBehaviour {
 	}
 
 	private void HandleClick(BaseTile clicked) {
-		// TODO test code, turn it green
-		if (clicked.SurroundedByType<RiverTile>() || clicked.SurroundedByType<SourceTile>()) {
-			TileGrid grid = clicked.Grid;
-			grid.ReplaceTile(clicked, riverTile);
-		}
+		clicked.OnClick();
 	}
 }
