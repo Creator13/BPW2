@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ce60a03976f1f488cd3c38ecb92495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterAmt: 3
+  waterAmt: 15
 --- !u!64 &7283833084021306491
 MeshCollider:
   m_ObjectHideFlags: 0

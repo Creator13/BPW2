@@ -1,9 +1,13 @@
 ﻿using Tile;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI {
 	public class UIController : MonoBehaviour {
 		[SerializeField] private TileDialog dialogPrefab;
+		[SerializeField] private TextMeshProUGUI waterText;
+		[SerializeField] private TileGrid grid;
 
 		private Camera cam;
 		private Canvas canvas;
@@ -15,8 +19,11 @@ namespace UI {
 			canvas = GetComponent<Canvas>();
 		}
 
+		private void Update() {
+			waterText.text = "Water: " + grid.Source.AvailableRivers;
+		}
+
 		public void ShowDialog(GameObject obj) {
-			Vector3 boxPos = cam.WorldToScreenPoint(obj.transform.position);
 
 			if (!dialog) {
 				dialog = Instantiate(dialogPrefab, canvas.transform, false);
@@ -30,8 +37,6 @@ namespace UI {
 			if (tile) {
 				dialog.SetTile(tile);
 			}
-
-			dialog.transform.position = boxPos + new Vector3(0, 15, 0);
 		}
 
 		public void HideDialog() {

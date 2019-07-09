@@ -20,6 +20,9 @@ namespace Tile {
 		[SerializeField] private float yOffset = -0.5f;
 		public float YOffset => yOffset;
 
+		public float Width => gridSizeX * tileSize;
+		public float Height => gridSizeZ * tileSize;
+
 		[SerializeField] private Camera mainCamera;
 		
 		public SourceTile Source { get; private set; }
@@ -94,7 +97,7 @@ namespace Tile {
 			return pos + transform.position;
 		}
 
-		public BaseTile[] GetSurroundingTiles(int x, int z) {
+		public IEnumerable<BaseTile> GetSurroundingTiles(int x, int z) {
 			List<BaseTile> tiles = new List<BaseTile>();
 
 			if (x + 1 < gridSizeX) {
@@ -116,8 +119,25 @@ namespace Tile {
 			return tiles.ToArray();
 		}
 
+		public IEnumerable<T> GetSurroundingTiles<T>(int x, int z) where T : BaseTile {
+			IEnumerable<BaseTile> tiles = GetSurroundingTiles(x, z);
+
+			List<T> specificTiles = new List<T>();
+			specificTiles.AddRange(tiles.OfType<T>());
+			
+			return specificTiles.ToArray();
+		}
+
+		public IEnumerable<BaseTile> GetSurroundingTiles(BaseTile tile) {
+			return GetSurroundingTiles(tile.X, tile.Z);
+		}
+
+		public IEnumerable<T> GetSurroundingTiles<T>(BaseTile tile) where T : BaseTile {
+			return GetSurroundingTiles<T>(tile.X, tile.Z);
+		}
+
 		public bool TileHasSurroundingType<T>(int x, int z) {
-			BaseTile[] tiles = GetSurroundingTiles(x, z);
+			IEnumerable<BaseTile> tiles = GetSurroundingTiles(x, z);
 
 			return tiles.Any(tile => tile.GetType() == typeof(T));
 		}
@@ -131,8 +151,8 @@ namespace Tile {
 				return bt;
 			}
 			catch (IndexOutOfRangeException e) {
-				Debug.LogError("Tile to be replaced was out of range");
-				return null;
+				Debug.LogError("Tile to be replaced was out of range: x:" + newTile.X + " z: " + newTile.Z);
+				throw;
 			}
 		}
 

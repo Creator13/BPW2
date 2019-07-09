@@ -13,12 +13,12 @@ namespace Tile {
 			base.Initialize(x, z, grid);
 
 			rivers = new List<RiverTile>();
+
+			SetColor(Color.cyan);
 		}
 
 		public void AddRiver(RiverTile river) {
-			if (rivers.Count < 3) {
-				rivers.Add(river);
-			}
+			rivers.Add(river);
 		}
 	}
 }

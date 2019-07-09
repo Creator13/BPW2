@@ -953,7 +953,7 @@ MonoBehaviour:
     type: 3}
   sourceTilePrefab: {fileID: 5927937490616690058, guid: d0f547544d7b8dc41b642c3cf2f9f6aa,
     type: 3}
-  riverTilePrefab: {fileID: 7706021200542100050, guid: e0bb237d382c1834dbf3f4edb46000ed,
+  riverTilePrefab: {fileID: 4810701380805502742, guid: 988ba2c4785eb47408cd97500750d704,
     type: 3}
   gridSizeX: 10
   gridSizeZ: 10

@@ -58,7 +58,6 @@ public class MouseHandler : MonoBehaviour {
 
 					// Check if the object that was hit was a tile, if so handle click
 					if (clicked) {
-						ui.ShowDialog(clicked.gameObject);
 						HandleClick(clicked);
 					}
 					else ui.HideDialog();

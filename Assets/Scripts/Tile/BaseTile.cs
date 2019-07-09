@@ -17,11 +17,11 @@ namespace Tile {
 			
 			// Set initial position (relative to parent Grid).
 			UpdatePosition();
-			
-//			SetColor(x % 2 == 0 && z % 2 == 0 || x % 2 == 1 && z % 2 == 1 ? Color.red : Color.blue);
 		}
 
 		public virtual void OnClick() {
+			//TODO implement dialog box here? Or not
+//			ui.ShowDialog(clicked.gameObject);
 			if ((SurroundedByType<RiverTile>() || SurroundedByType<SourceTile>())
 			    && GetType() != typeof(SourceTile) && GetType() != typeof(RiverTile)) {
 				TileGrid grid = Grid;
