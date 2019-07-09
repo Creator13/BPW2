@@ -13,7 +13,11 @@ namespace Editor {
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("standardTilePrefab"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("sourceTilePrefab"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("riverTilePrefab"));
+			
+			GUILayout.Space(10);
 
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("mainCamera"));
+			
 			GUILayout.Space(10);
 
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("gridSizeX"));

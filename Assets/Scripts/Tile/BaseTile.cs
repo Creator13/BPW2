@@ -23,7 +23,7 @@ namespace Tile {
 
 		public virtual void OnClick() {
 			if ((SurroundedByType<RiverTile>() || SurroundedByType<SourceTile>())
-			    && GetType() != typeof(SourceTile)) {
+			    && GetType() != typeof(SourceTile) && GetType() != typeof(RiverTile)) {
 				TileGrid grid = Grid;
 
 				if (grid.Source.AvailableRivers > 0) {

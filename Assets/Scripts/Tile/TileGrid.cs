@@ -19,11 +19,16 @@ namespace Tile {
 		public float TileSize => tileSize;
 		[SerializeField] private float yOffset = -0.5f;
 		public float YOffset => yOffset;
+
+		[SerializeField] private Camera mainCamera;
 		
 		public SourceTile Source { get; private set; }
 
 		private void Start() {
 			Generate();
+
+			Vector3 currentCamPos = mainCamera.transform.position;
+			mainCamera.transform.position = new Vector3((float) (transform.position.x + gridSizeX / 2.0 * tileSize), currentCamPos.y, currentCamPos.z);
 		}
 
 		public void Generate() {
@@ -119,12 +124,9 @@ namespace Tile {
 
 		public BaseTile ReplaceTile(BaseTile tile, BaseTile newTile) {
 			try {
-				BaseTile oldTile = grid[tile.X, tile.Z];
-//				oldTile.enabled = false;
-				
 				BaseTile bt = CreateTile(tile.X, tile.Z, newTile);
 				
-				Destroy(oldTile.gameObject);
+				Destroy(tile.gameObject);
 
 				return bt;
 			}
