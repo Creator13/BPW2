@@ -1,3 +1,4 @@
+using UI;
 using UnityEngine;
 
 namespace Tile {
@@ -20,15 +21,25 @@ namespace Tile {
 		}
 
 		public virtual void OnClick() {
-			//TODO implement dialog box here? Or not
-//			ui.ShowDialog(clicked.gameObject);
+			TileActionButton button = new TileActionButton(UIController.Instance.GetButton("RiverButton"), ConvertToRiver);
+			if (Grid.Source.AvailableRivers <= 0 || !(SurroundedByType<RiverTile>() || SurroundedByType<SourceTile>())) {
+				button.Button.interactable = false;
+			}
+			else button.Button.interactable = true;
+			
+			UIController.Instance.ShowDialog(this, button);
+		}
+
+		private void ConvertToRiver() {
+			// Check if the tile is allowed to be converted to a river:
+			// Needs to connect to either a source or a river and it shouldn't already be a source or a river
 			if ((SurroundedByType<RiverTile>() || SurroundedByType<SourceTile>())
 			    && GetType() != typeof(SourceTile) && GetType() != typeof(RiverTile)) {
-				TileGrid grid = Grid;
-
-				if (grid.Source.AvailableRivers > 0) {
-					RiverTile riverTile = grid.ReplaceTile(this, Grid.RiverTilePrefab) as RiverTile;
-					grid.Source.AddRiver(riverTile);
+				// Check if the source can have more rivers
+				if (Grid.Source.AvailableRivers > 0) {
+					// Build and replace a new river tile and register it to the source.
+					RiverTile riverTile = Grid.ReplaceTile(this, Grid.RiverTilePrefab) as RiverTile;
+					Grid.Source.AddRiver(riverTile);
 				}
 			}
 		}

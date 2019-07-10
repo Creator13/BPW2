@@ -34,8 +34,9 @@ public class MouseHandler : MonoBehaviour {
 	}
 
 	private void CheckHover() {
-		// Raycast from mouse position
+		// Make UI (current dialogs) block raycast.
 		if (!EventSystem.current.IsPointerOverGameObject()) {
+			// Raycast from mouse position
 			if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out RaycastHit hoverHitInfo)) {
 				BaseTile hover = hoverHitInfo.collider.GetComponent<BaseTile>();
 
@@ -51,8 +52,9 @@ public class MouseHandler : MonoBehaviour {
 	private void CheckClick() {
 		// Check if player clicked
 		if (Input.GetMouseButtonDown(0)) {
-			// Raycast from mouse position
+			// Make UI (current dialogs) block raycast.
 			if (!EventSystem.current.IsPointerOverGameObject()) {
+				// Raycast from mouse position
 				if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out RaycastHit clickHitInfo)) {
 					BaseTile clicked = clickHitInfo.collider.GetComponent<BaseTile>();
 
@@ -60,8 +62,10 @@ public class MouseHandler : MonoBehaviour {
 					if (clicked) {
 						HandleClick(clicked);
 					}
+					// If raycast didn't hit an instance of BaseTile, stop showing the dialog
 					else ui.HideDialog();
 				}
+				// If raycast didn't hit anything, hide the dialog
 				else ui.HideDialog();
 			}
 		}

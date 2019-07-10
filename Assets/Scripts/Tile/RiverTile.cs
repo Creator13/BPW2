@@ -39,19 +39,18 @@ namespace Tile {
 		public override void Initialize(int x, int z, TileGrid grid) {
 			base.Initialize(x, z, grid);
 
-//			SetColor(Color.yellow);
 			UpdateTileDirection();
 			UpdateSurroundingTileDirection();
 		}
 
-		public void UpdateSurroundingTileDirection() {
+		private void UpdateSurroundingTileDirection() {
 			List<RiverTile> tiles = new List<RiverTile>(Grid.GetSurroundingTiles<RiverTile>(this));
 			foreach (RiverTile tile in tiles) {
 				tile.UpdateTileDirection();
 			}
 		}
 
-		public void UpdateTileDirection() {
+		private void UpdateTileDirection() {
 			List<BaseTile> tiles = new List<BaseTile>(Grid.GetSurroundingTiles(this));
 			List<BaseTile> waters = new List<BaseTile>(tiles.Where(t => t.GetType() == typeof(RiverTile) || t.GetType() == typeof(SourceTile)));
 			int surroundingRivers = waters.Count;
