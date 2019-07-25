@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
+using UI;
 using UnityEngine;
 
 namespace Tile {
@@ -40,19 +40,35 @@ namespace Tile {
 			base.Initialize(x, z, grid);
 
 			UpdateTileDirection();
-			UpdateSurroundingTileDirection();
+			// When the tile is placed, surrounding tiles must update their shape/direction as well.
+			UpdateSurroundingRiverDirection();
+			// When the tile is placed, update the water level for all surrounding ground/growable tiles
+			UpdateSurroundingGroundWaterLevels();
+			
+			// Set the ground color to the wet color
+			SetColor(Grid.wetColor, "Ground");
 		}
 
-		private void UpdateSurroundingTileDirection() {
-			List<RiverTile> tiles = new List<RiverTile>(Grid.GetSurroundingTiles<RiverTile>(this));
-			foreach (RiverTile tile in tiles) {
-				tile.UpdateTileDirection();
+		private void UpdateSurroundingGroundWaterLevels() {
+			List<GroundTile> tiles = new List<GroundTile>(Grid.GetSurroundingTiles<GroundTile>(this));
+
+			foreach (GroundTile tile in tiles) {
+				tile.UpdateWaterAvailability();
 			}
+		}
+		
+		private void UpdateSurroundingRiverDirection() {
+			// Get all the surrounding tiles and update their direction, to make the connection both ways.
+			List<RiverTile> tiles = new List<RiverTile>(Grid.GetSurroundingTiles<RiverTile>(this));
+			tiles.ForEach(t => t.UpdateTileDirection());
 		}
 
 		private void UpdateTileDirection() {
 			List<BaseTile> tiles = new List<BaseTile>(Grid.GetSurroundingTiles(this));
-			List<BaseTile> waters = new List<BaseTile>(tiles.Where(t => t.GetType() == typeof(RiverTile) || t.GetType() == typeof(SourceTile)));
+			// Get all the water tiles (all the tiles a river can connect to)
+			List<BaseTile> waters = new List<BaseTile>(tiles.Where(t => 
+				t.GetType() == typeof(RiverTile) || t.GetType() == typeof(SourceTile)
+			));
 			int surroundingRivers = waters.Count;
 
 			if (surroundingRivers == 1) {
@@ -92,6 +108,11 @@ namespace Tile {
 					shape = RiverShapes.Bend;
 
 					// Find direction
+					// Bend direction is arbitrary. Current model is oriented/mapped as follows:
+					// 0deg/North:   east and south
+					// 90deg/East:   west and south
+					// 180deg/South: west and north
+					// 270deg/West:  east and north
 					if (waters[0].X < X && waters[1].Z > Z || waters[1].X < X && waters[0].Z > Z) {
 						dir = RiverDirections.South;
 					}
@@ -109,7 +130,7 @@ namespace Tile {
 			else if (surroundingRivers == 3) {
 				shape = RiverShapes.Split3;
 
-				// Find out which two coords have either the same X or Z
+				// Find out which two coords have either the same X or the same Z
 				List<BaseTile> sameX = waters.FindAll(t => t.X == X);
 				List<BaseTile> sameZ = waters.FindAll(t => t.Z == Z);
 
@@ -172,14 +193,17 @@ namespace Tile {
 				Debug.Log("Could not find mesh");
 			}
 
+			// Change the mesh
 			mf.mesh = mesh;
 			GetComponent<MeshCollider>().sharedMesh = mesh;
 			
+			// Apply the rotation
 			transform.localRotation = Quaternion.Euler(0, (float) dir, 0);
 		}
 
 		public override void OnClick() {
 //			UpdateDirections();
+			UIController.Instance.HideDialog();
 		}
 	}
 }

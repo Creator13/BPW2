@@ -10,7 +10,6 @@ namespace UI {
 		[SerializeField] private RectTransform buttonPanel;
 		
 		private BaseTile tile;
-
 		private List<Button> buttons;
 
 		private void UpdateScreenPos() {
@@ -28,6 +27,8 @@ namespace UI {
 			foreach (TileActionButton tb in buttons) {
 				Button button = Instantiate(tb.Button, buttonPanel, false);
 				
+				// Bind the action and a call to close the dialog to the button. When the user clicks the button, the 
+				// action is performed and the dialog is closed immediately
 				button.onClick.AddListener(tb.Action);
 				button.onClick.AddListener(ClosePanel);
 			}

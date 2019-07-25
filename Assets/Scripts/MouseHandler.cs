@@ -8,7 +8,7 @@ public class MouseHandler : MonoBehaviour {
 	private Camera cam;
 	[SerializeField] private UIController ui;
 
-	[SerializeField, Range(0, 1)] private float hoverStrength = 0.7f;
+	[SerializeField, Range(0, 1)] private float hoverStrength = 0.4f;
 
 	private BaseTile currentHover;
 	private BaseTile CurrentHover {

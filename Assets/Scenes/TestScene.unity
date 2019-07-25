@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.2089853, g: 0.27238783, b: 0.4429709, a: 1}
+  m_IndirectSpecularColor: {r: 0.2092413, g: 0.27267054, b: 0.44306594, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -265,7 +265,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   volumeAnchorOverride: {fileID: 0}
-  antialiasing: 2
+  antialiasing: 1
   dithering: 0
   stopNaNs: 0
   physicalParameters:
@@ -352,7 +352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ui: {fileID: 299494934}
-  hoverStrength: 0.7
+  hoverStrength: 0.4
 --- !u!1 &299494933
 GameObject:
   m_ObjectHideFlags: 0
@@ -1113,7 +1113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 587affb940c5fdc4183682ecc42c0e5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  standardTilePrefab: {fileID: 5569751265862313519, guid: bd61bcff77be25b48a4da04a9a9c4c71,
+  groundTilePrefab: {fileID: 5110496366199137348, guid: bd61bcff77be25b48a4da04a9a9c4c71,
     type: 3}
   sourceTilePrefab: {fileID: 5927937490616690058, guid: d0f547544d7b8dc41b642c3cf2f9f6aa,
     type: 3}
@@ -1124,6 +1124,7 @@ MonoBehaviour:
   tileSize: 1
   yOffset: 0
   mainCamera: {fileID: 211998386}
+  waterSpreadTickTime: 0
 --- !u!4 &2143452901
 Transform:
   m_ObjectHideFlags: 0

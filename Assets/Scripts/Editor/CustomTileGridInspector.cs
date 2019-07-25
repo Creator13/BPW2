@@ -1,5 +1,6 @@
 using Tile;
 using UnityEditor;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace Editor {
@@ -10,9 +11,14 @@ namespace Editor {
 
 			serializedObject.Update();
 
-			EditorGUILayout.PropertyField(serializedObject.FindProperty("standardTilePrefab"));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("groundTilePrefab"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("sourceTilePrefab"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("riverTilePrefab"));
+			
+			GUILayout.Space(10);
+
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("dryColor"));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("wetColor"));
 			
 			GUILayout.Space(10);
 
