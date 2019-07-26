@@ -120,6 +120,51 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &108354603
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 108354605}
+  - component: {fileID: 108354604}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &108354604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108354603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5787a1a67493514c9fc5627a2fdb2f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  species:
+  - {fileID: 11400000, guid: 0a72d9a356eb86f48969b7cb31036a25, type: 2}
+--- !u!4 &108354605
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108354603}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.7536778, y: -17.598164, z: 24.782375}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &211998384
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,7 +397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ui: {fileID: 299494934}
-  hoverStrength: 0.4
+  hoverStrength: 0.32
 --- !u!1 &299494933
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,6 +437,9 @@ MonoBehaviour:
   buttons:
   - name: RiverButton
     button: {fileID: 1621225766420895080, guid: a4e510274f3110043aed39283ec17713,
+      type: 3}
+  - name: HoeButton
+    button: {fileID: 1621225766420895080, guid: 9b2767c8b2560a64797ea7c22f5befff,
       type: 3}
 --- !u!114 &299494935
 MonoBehaviour:
@@ -1119,12 +1167,15 @@ MonoBehaviour:
     type: 3}
   riverTilePrefab: {fileID: 4810701380805502742, guid: 988ba2c4785eb47408cd97500750d704,
     type: 3}
+  growableTilePrefab: {fileID: 3469215582369165178, guid: 826b5f5ae7abc024f85b0925cd8adc96,
+    type: 3}
+  dryColor: {r: 0.63, g: 0.5, b: 0.38, a: 1}
+  wetColor: {r: 0.413, g: 0.30716228, b: 0.207739, a: 1}
   gridSizeX: 10
   gridSizeZ: 10
   tileSize: 1
   yOffset: 0
   mainCamera: {fileID: 211998386}
-  waterSpreadTickTime: 0
 --- !u!4 &2143452901
 Transform:
   m_ObjectHideFlags: 0

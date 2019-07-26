@@ -14,6 +14,7 @@ namespace Editor {
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("groundTilePrefab"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("sourceTilePrefab"));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("riverTilePrefab"));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("growableTilePrefab"));
 			
 			GUILayout.Space(10);
 

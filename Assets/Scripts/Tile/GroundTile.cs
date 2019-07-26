@@ -7,13 +7,12 @@ namespace Tile {
 	[RequireComponent(typeof(Renderer))]
 	public class GroundTile : BaseTile {
 		private int waterAvailability;
-		private float wetness;
+
+		protected float wetness;
 //		private float waterLevel;
 
 //		[SerializeField] private float waterUpdateSpeed;
 		[SerializeField] private float maxEfficiencyRiverCount = 3;
-//		[SerializeField] private Color dry = new Color(0.63f, 0.50f, 0.38f);
-//		[SerializeField] private Color wet = new Color(0.37f, 0.26f, 0.17f);
 
 		public override void Initialize(int x, int z, TileGrid grid) {
 			base.Initialize(x, z, grid);
@@ -40,13 +39,13 @@ namespace Tile {
 			// surrounding rivers and is maximal (1.0) when it is surrounded by the number of rivers maxEfficiencyRiverCount
 			wetness = Mathf.Clamp01(waterAvailability / maxEfficiencyRiverCount);
 			
-			UpdateColor();
+			UpdateGroundColor();
 		}
 
-		private void UpdateColor() {
+		private void UpdateGroundColor() {
 			// Set the color lerped between dry and wet (meaning it will have the dry color when the wetness is 0 and
 			// the wet color when it is 1, and something in between when the value is in between 0 and 1)
-			SetColor(Color.Lerp(Grid.dryColor, Grid.wetColor, wetness), "Ground");
+			SetColor(Color.Lerp(Grid.DryColor, Grid.WetColor, wetness), "Ground");
 		}
 		
 //	public void TickWaterLevel() {
@@ -54,14 +53,20 @@ namespace Tile {
 //	}
 
 		public override void OnClick() {
-			// Todo add convert to growable tile (species select directly in this box is possible by reopening the dialog with new buttons)
-			TileActionButton button = new TileActionButton(UIController.Instance.GetButton("RiverButton"), ConvertToRiver);
+			// Create button for river
+			TileActionButton riverButton = new TileActionButton(UIController.Instance.GetButton("RiverButton"), ConvertToRiver);
+			// Set interactable depending on if there is water nearby
 			if (Grid.Source.AvailableRivers <= 0 || !(SurroundedByType<RiverTile>() || SurroundedByType<SourceTile>())) {
-				button.Button.interactable = false;
+				riverButton.Button.interactable = false;
 			}
-			else button.Button.interactable = true;
+			else riverButton.Button.interactable = true;
+			
+			// Create button for growable
+			TileActionButton growableButton = new TileActionButton(UIController.Instance.GetButton("HoeButton"), ConvertToGrowable);
+			// Set interactable depending on tile wetness (if wetness higher than 0, the button is interactable)
+			growableButton.Button.interactable = wetness > 0;
 
-			UIController.Instance.ShowDialog(this, button);
+			UIController.Instance.ShowDialog(this, riverButton, growableButton);
 		}
 
 		private void ConvertToRiver() {
@@ -75,6 +80,13 @@ namespace Tile {
 					RiverTile riverTile = Grid.ReplaceTile(this, Grid.RiverTilePrefab) as RiverTile;
 					Grid.Source.AddRiver(riverTile);
 				}
+			}
+		}
+
+		protected void ConvertToGrowable() {
+			if (wetness > 0) {
+				GrowableTile tile = Grid.ReplaceTile(this, Grid.GrowableTilePrefab) as GrowableTile;
+				if (tile != null) tile.OnClick();
 			}
 		}
 	}

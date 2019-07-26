@@ -46,7 +46,7 @@ namespace Tile {
 			UpdateSurroundingGroundWaterLevels();
 			
 			// Set the ground color to the wet color
-			SetColor(Grid.wetColor, "Ground");
+			SetColor(Grid.WetColor, "Ground");
 		}
 
 		private void UpdateSurroundingGroundWaterLevels() {

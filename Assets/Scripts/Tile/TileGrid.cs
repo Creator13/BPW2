@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Growable;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,9 +12,13 @@ namespace Tile {
 		[SerializeField] private SourceTile sourceTilePrefab;
 		[SerializeField] private RiverTile riverTilePrefab;
 		public RiverTile RiverTilePrefab => riverTilePrefab;
+		[SerializeField] private GrowableTile growableTilePrefab;
+		public GrowableTile GrowableTilePrefab => growableTilePrefab;
 
-		public Color dryColor = new Color(0.63f, 0.50f, 0.38f);
-		public Color wetColor = new Color(0.37f, 0.26f, 0.17f);
+		[SerializeField] private Color dryColor = new Color(0.63f, 0.50f, 0.38f);
+		public Color DryColor => dryColor;
+		[SerializeField] private Color wetColor = new Color(0.37f, 0.26f, 0.17f);
+		public Color WetColor => wetColor;
 
 		[SerializeField] private int gridSizeX = 5;
 		[SerializeField] private int gridSizeZ = 5;
@@ -29,7 +34,7 @@ namespace Tile {
 
 		[SerializeField] private Camera mainCamera;
 
-		[SerializeField] private float waterSpreadTickTime;
+//		[SerializeField] private float waterSpreadTickTime;
 		
 		public SourceTile Source { get; private set; }
 
