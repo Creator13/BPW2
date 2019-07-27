@@ -12,6 +12,8 @@ namespace UI {
 
 		[SerializeField] private TileDialog dialogPrefab;
 		[SerializeField] private TextMeshProUGUI waterText;
+		[SerializeField] private RectTransform pauseMenu;
+		
 		[SerializeField] private TileGrid grid;
 
 		[Serializable]
@@ -41,6 +43,9 @@ namespace UI {
 		}
 
 		private void Update() {
+			// Check for pause to make game run slightly more efficient
+			if (GameManager.Instance.Paused) return;
+			
 			// Update water availability text
 			waterText.text = "Water: " + grid.Source.AvailableRivers;
 		}
@@ -71,6 +76,10 @@ namespace UI {
 			}
 		}
 
+		public void ShowPauseMenu(bool show) {
+			pauseMenu.gameObject.SetActive(show);
+		}
+		
 		public Button GetButton(string name) {
 			// Lookup button in the database/button list and return the actual Unity button associated with it.
 			return buttons.Find(b => b.name == name).button;

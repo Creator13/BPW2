@@ -27,10 +27,13 @@ public class MouseHandler : MonoBehaviour {
 	}
 
 	private void Update() {
-		CheckClick();
+		// Check for pause to make game run slightly more efficient
+		if (!GameManager.Instance.Paused) {
+			CheckClick();
 		
-		// Check for hover every frame
-		CheckHover();
+			// Check for hover every frame
+			CheckHover();
+		}
 	}
 
 	private void CheckHover() {
