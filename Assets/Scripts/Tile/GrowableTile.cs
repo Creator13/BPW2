@@ -20,6 +20,7 @@ namespace Tile {
 
 		[SerializeField] private Texture tilledGround;
 		[SerializeField] private Texture seededGround;
+		[SerializeField] private Texture harvestedGround;
 
 		[SerializeField] private Transform spawnPoint;
 
@@ -35,6 +36,9 @@ namespace Tile {
 				}
 				else if (value == GrowableState.Seeded) {
 					SetGroundTexture(seededGround);
+				}
+				else if (value == GrowableState.Harvested) {
+					SetGroundTexture(harvestedGround);
 				}
 				else {
 					SetGroundTexture(null);
@@ -66,6 +70,7 @@ namespace Tile {
 
 		public override void OnClick() {
 			List<TileActionButton> buttons = new List<TileActionButton>();
+			
 			if (state == GrowableState.Tilled) {
 				// Show species selection buttons
 				foreach (Species s in GameManager.Instance.Species) {
@@ -132,17 +137,65 @@ namespace Tile {
 		}
 
 		private void Harvest() {
-			Debug.Log("hrvest");
+			// Only allow harvesting when state is fullgrown
+			// TODO allow harvesting for less yield  while growing
+			if (State != GrowableState.FullGrown) 
+				throw new InvalidOperationException("Cannot harvest while the crop is not fully grown");
+			
+			State = GrowableState.Harvested;
+
+			// Destroy the current stage gameobject(s)
+			foreach (Transform t in spawnPoint.GetComponentsInChildren<Transform>()) {
+				// GetCompnonentsInChildren will also return the components found in parents apparently, so check to
+				// not destroy the spawnpoint
+				if (t.gameObject != spawnPoint.gameObject) Destroy(t.gameObject);
+			}
+
+			GameManager.Instance.RegisterHarvest(species, 50);
+		}
+
+		public override void OnHoverEnter(float hoverStrength) {
+			base.OnHoverEnter(hoverStrength);
+			
+			foreach (Transform t in spawnPoint.GetComponentsInChildren<Transform>()) {
+				// Exclude parent object
+				if (t.gameObject != spawnPoint.gameObject) {
+					// Set hover for each child object
+					Renderer rend = t.GetComponent<Renderer>();
+					if (rend) {
+						SetHover(hoverStrength, rend);
+					}
+				}
+			}
+		}
+
+		public override void OnHoverExit() {
+			base.OnHoverExit();
+			
+			foreach (Transform t in spawnPoint.GetComponentsInChildren<Transform>()) {
+				// Exclude parent object
+				if (t.gameObject != spawnPoint.gameObject) {
+					// Set hover for each child object
+					Renderer rend = t.GetComponent<Renderer>();
+					if (rend) {
+						SetHover(0, rend);
+					}
+				}
+			}
 		}
 
 		private void UpdateGrowthStage() {
 			if (!mf) throw new InvalidOperationException("MeshFilter wasn't loaded");
 
 			if (growthStage >= 0) {
+				// Destroy all current stage gameobjects in the spawnpoint first, if there are any
 				foreach (Transform t in spawnPoint.GetComponentsInChildren<Transform>()) {
+					// GetCompnonentsInChildren will also return the components found in parents apparently, so check to
+					// not destroy the spawnpoint
 					if (t.gameObject != spawnPoint.gameObject) Destroy(t.gameObject);
 				}
 
+				// Instantiate the gameobject for the next growth stage
 				Instantiate(species.GetStage(growthStage), spawnPoint);
 			}
 		}

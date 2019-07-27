@@ -13,8 +13,9 @@ namespace UI {
 		[SerializeField] private TileDialog dialogPrefab;
 		[SerializeField] private TextMeshProUGUI waterText;
 		[SerializeField] private RectTransform pauseMenu;
-		
-		[SerializeField] private TileGrid grid;
+		[SerializeField] private GoalPanel goalPanel;
+
+		[Space(10)] [SerializeField] private TileGrid grid;
 
 		[Serializable]
 		private struct NameButton {
@@ -22,11 +23,9 @@ namespace UI {
 			public string name;
 			public Button button;
 		}
-		
-		// 'Static' database of available buttons. TODO Might replace with scriptableObjects
-		[SerializeField] private List<NameButton> buttons;
 
-		private Camera cam;
+		// 'Static' database of available buttons. TODO Might replace with scriptableObjects
+		[Space(10)] [SerializeField] private List<NameButton> buttons;
 		private Canvas canvas;
 
 		private TileDialog dialog;
@@ -38,16 +37,22 @@ namespace UI {
 
 		private void Start() {
 			// Load required components
-			cam = Camera.main;
 			canvas = GetComponent<Canvas>();
+
+			// Make pausemenu start out as disabled.
+			pauseMenu.gameObject.SetActive(false);
+			
+			goalPanel.CreateList(GameManager.Instance.Goals);
 		}
 
 		private void Update() {
 			// Check for pause to make game run slightly more efficient
 			if (GameManager.Instance.Paused) return;
-			
+
 			// Update water availability text
-			waterText.text = "Water: " + grid.Source.AvailableRivers;
+			waterText.text = "Water left: " + grid.Source.AvailableRivers;
+			
+			goalPanel.UpdateList();
 		}
 
 		public void ShowDialog(BaseTile obj, params TileActionButton[] buttons) {
@@ -56,7 +61,7 @@ namespace UI {
 			if (dialog) {
 				HideDialog();
 			}
-			
+
 			// Create the new dialog as a child of the main canvas
 			dialog = Instantiate(dialogPrefab, canvas.transform, false);
 
@@ -79,7 +84,7 @@ namespace UI {
 		public void ShowPauseMenu(bool show) {
 			pauseMenu.gameObject.SetActive(show);
 		}
-		
+
 		public Button GetButton(string name) {
 			// Lookup button in the database/button list and return the actual Unity button associated with it.
 			return buttons.Find(b => b.name == name).button;

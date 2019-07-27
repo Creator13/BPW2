@@ -139,6 +139,7 @@ MonoBehaviour:
   maxEfficiencyRiverCount: 3
   tilledGround: {fileID: 2800000, guid: 49a14fd3cbc21cd489310d4f7caa9114, type: 3}
   seededGround: {fileID: 2800000, guid: 86dcb241bb6ef5d43a8c1c11e382cc01, type: 3}
+  harvestedGround: {fileID: 2800000, guid: 033de15cc4bcfca4d92306e7036e438c, type: 3}
   spawnPoint: {fileID: 1831211748479157350}
   species: {fileID: 0}
   state: 0

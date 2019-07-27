@@ -7,7 +7,7 @@ namespace Tile {
 		private int gridPosX, gridPosZ = -1;
 		public int X => gridPosX;
 		public int Z => gridPosZ;
-		public TileGrid Grid { get; protected set; }
+		protected TileGrid Grid { get; private set; }
 
 		public virtual void Initialize(int x, int z, TileGrid grid) {
 			OnHoverExit();
@@ -31,19 +31,18 @@ namespace Tile {
 			transform.localPosition = new Vector3((gridPosX + .5f) * Grid.TileSize, Grid.YOffset, (gridPosZ + .5f) * Grid.TileSize);
 		}
 
-		public void OnHoverEnter(float hoverStrength) {
+		public virtual void OnHoverEnter(float hoverStrength) {
 			// Apply hover effect
-			SetHover(hoverStrength);
+			SetHover(hoverStrength, GetComponent<Renderer>());
 		}
 
-		public void OnHoverExit() {
+		public virtual void OnHoverExit() {
 			// Remove hover effect
-			SetHover(0);
+			SetHover(0, GetComponent<Renderer>());
 		}
 
-		private void SetHover(float hoverAmt) {
+		protected void SetHover(float hoverAmt, Renderer rend) {
 			// Change color using matPropBlock
-			Renderer rend = GetComponent<Renderer>();
 			MaterialPropertyBlock matPropBlock = new MaterialPropertyBlock();
 
 			// Set each material individually to have the same parameters (creates support for editing materials separately)
