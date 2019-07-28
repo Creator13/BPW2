@@ -20,6 +20,8 @@ namespace Tile {
 		[SerializeField] private Color wetColor = new Color(0.37f, 0.26f, 0.17f);
 		public Color WetColor => wetColor;
 
+		[SerializeField] private int sourceCapacity = 10;
+		
 		[SerializeField] private int gridSizeX = 5;
 		[SerializeField] private int gridSizeZ = 5;
 		private BaseTile[,] grid;
@@ -65,6 +67,7 @@ namespace Tile {
 					if (i == sourceIndex) {
 						// Generate one source tile at the randomly generated index
 						Source = (SourceTile) CreateTile(x, z, sourceTilePrefab);
+						Source.SetCapacity(sourceCapacity);
 					}
 					else {
 						// Generate standard tile

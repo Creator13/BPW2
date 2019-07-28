@@ -179,7 +179,7 @@ namespace Tile {
 			float chance = species.GerminationChance * Mathf.Sqrt(Mathf.Clamp(wetness + .25f, 0, 1));
 			Debug.Log("Germinating... chance: " + chance + " wetness: " + wetness);
 
-			if (Random.value < chance) {
+			if (Random.value <= chance) {
 				StartCoroutine(GrowingLoop());
 			}
 			else {

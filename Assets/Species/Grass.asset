@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ef089262e8d91b4f80954fb475bfc00, type: 3}
+  m_Name: Grass
+  m_EditorClassIdentifier: 
+  name: Grass
+  icon: {fileID: 21300000, guid: b7ae3813e38581746ba1db915ce76fd7, type: 3}
+  button: {fileID: 6287251000871552291, guid: b11e73c530fe39e4bb269595ca9b11ff, type: 3}
+  seedIcon: {fileID: 0}
+  minYield: 10
+  germinationTime: 11
+  germinationChance: 0.95
+  growSpeed: 15
+  growingChance: 0.95
+  growthStages:
+  - {fileID: 3739633957314006083, guid: a630dd5c81e0dee4a97f2a93e77376b0, type: 3}
+  - {fileID: 3093742984240447822, guid: 603ea62c6a8446f428c18c80240beabf, type: 3}
+  - {fileID: 8965976887361157451, guid: 023bd1fa36e695440a908aabfdcc8160, type: 3}
+  deadStage: {fileID: 0}
+  harvestedStage: {fileID: 0}

@@ -48,6 +48,10 @@ namespace Tile {
 			SetColor(Grid.WetColor, "Ground");
 		}
 
+		public void SetCapacity(int amt) {
+			waterAmt = amt;
+		}
+
 		public void AddRiver(RiverTile river) {
 			rivers.Add(river);
 		}

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 89da2d4e26c7e2d4bac9c58081e05202
+guid: f4029fab3c5f5614b824e066dacf4d07
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable: []
@@ -7,13 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Ground
-    second: {fileID: 2100000, guid: 9673ce682059ad94d819b424709fe9c5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Water
-    second: {fileID: 2100000, guid: 812f22182dc446c4aa821d624ffd41e5, type: 2}
+      name: Material
+    second: {fileID: 2100000, guid: bf549f191fba2c04dba6388db860c23e, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -48,10 +43,10 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
-    importVisibility: 0
-    importBlendShapes: 0
-    importCameras: 0
-    importLights: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1

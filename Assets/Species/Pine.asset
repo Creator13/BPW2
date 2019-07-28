@@ -18,9 +18,9 @@ MonoBehaviour:
   seedIcon: {fileID: 0}
   minYield: 35
   germinationTime: 15
-  germinationChance: 0.9
+  germinationChance: 0.75
   growSpeed: 20
-  growingChance: 0.8
+  growingChance: 0.75
   growthStages:
   - {fileID: 321247539463768468, guid: 388cc6eb7e08786419471783f4a983da, type: 3}
   - {fileID: 1214932010090134320, guid: bd30a055ee57f92438cb12c721b79ccc, type: 3}

@@ -22,6 +22,10 @@ namespace Editor {
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("wetColor"));
 			
 			GUILayout.Space(10);
+			
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("sourceCapacity"));
+			
+			GUILayout.Space(10);
 
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("mainCamera"));
 			
