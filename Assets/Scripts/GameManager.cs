@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour {
 		get {
 			// Add all the species in the list of goals but only once.
 			HashSet<Species> s = new HashSet<Species>();
-			goals.ForEach(goal => s.Add(goal.species));
+			goals.ForEach(goal => s.Add(goal.Species));
 
 			return s.ToArray();
 		}
@@ -58,13 +58,27 @@ public class GameManager : MonoBehaviour {
 			won = value;
 		}
 	}
+	
+	private bool lost;
+	public bool Lost {
+		get => lost;
+		set {
+			// Set time to 0 to pause any possible running coroutines
+			Time.timeScale = value ? 0 : 1;
 
-	private bool AllGoalsReached {
-		get {
-			// Check if there are still any elements in the goals list where the goal is not reached
-			return !Goals.Any(goal => !goal.IsReached);
+			// Show the win screen
+			UIController.Instance.ShowGameOverScreen();
+
+			// Save the value for reference
+			lost = value;
 		}
 	}
+
+	// Check if there are still any elements in the goals list where the goal is not reached
+	private bool AllGoalsReached => !Goals.Any(goal => !goal.IsReached);
+	// Check if there are still any elements in the goals list where the number of seeds is higher than 0, then there
+	// are seeds left
+	private bool HasSeedsLeft => goals.Any(goal => goal.Seeds > 0);
 
 	private void Awake() {
 		// When the game is won, the global timeScale is set to 0. So change it back to 1 once a scene loads.
@@ -83,7 +97,7 @@ public class GameManager : MonoBehaviour {
 		// Do not continue execution beyond here if the game is paused (saves processing power)
 		if (Paused) return;
 
-		// Check if the goals are reached
+		// Check if the goals are reached or if the player is out of seeds
 		WatchGoalsReached();
 	}
 
@@ -92,13 +106,32 @@ public class GameManager : MonoBehaviour {
 			// Player wins the game if all goals have been reached
 			Won = true;
 		}
+		else if (!HasSeedsLeft) {
+			// TODO !!! add a check if there is currently enough yield on the map VERY IMPORTANT
+			Lost = true;
+		}
 	}
 
 	public void RegisterHarvest(Species s, int amt) {
 		// Count the harvested species towards the goal in the list of goals.
-		Goals.Find(goal => goal.species == s).Current += amt;
+		Goals.Find(goal => goal.Species == s).Current += amt;
 	}
 
+	public bool HasSeed(Species s) {
+		// Find if the goals list has a goal for the species s with seeds available
+		return goals.Any(goal => goal.Species == s && goal.Seeds > 0);
+	}
+	
+	public bool UseSeed(Species s) {
+		bool hasSeed = HasSeed(s);
+		
+		if (hasSeed) {
+			goals.Find(goal => goal.Species == s).Seeds--;
+		}
+
+		return hasSeed;
+	}
+	
 	public void Exit() {
 		Application.Quit();
 	}

@@ -69,7 +69,7 @@ namespace Tile {
 			UIController.Instance.ShowDialog(this, riverButton, growableButton);
 		}
 
-		private void ConvertToRiver() {
+		protected void ConvertToRiver() {
 			// Check if the tile is allowed to be converted to a river:
 			// Needs to connect to either a source or a river and it shouldn't already be a source or a river
 			if ((SurroundedByType<RiverTile>() || SurroundedByType<SourceTile>())

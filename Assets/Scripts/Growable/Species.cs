@@ -11,11 +11,19 @@ namespace Growable {
 		public Sprite Icon => icon;
 		[SerializeField] private Button button;
 		public Button Button => button;
+		[SerializeField] private Sprite seedIcon;
+		public Sprite SeedIcon => seedIcon;
+
+		[Space(10)] [SerializeField] private int maxYield;
 
 		[Space(10), SerializeField] private float germinationTime;
 		public float GerminationTime => germinationTime;
+		[Range(0, 1)] [SerializeField] private float germinationChance;
+		public float GerminationChance => germinationChance;
 		[SerializeField] private float growSpeed;
 		public float GrowSpeed => growSpeed;
+		[Range(0, 1)] [SerializeField] private float growingChance;
+		public float GrowingChance => growingChance;
 		
 		[Space(10), SerializeField] private GameObject[] growthStages;
 		public int StageCount => growthStages.Length;

@@ -16,6 +16,7 @@ namespace UI {
 
 		[Space(10)] [SerializeField] private RectTransform pauseMenu;
 		[SerializeField] private WinScreen winScreen;
+		[SerializeField] private GameOverScreen gameOverScreen;
 
 		[Space(10)] [SerializeField] private TileGrid grid;
 
@@ -44,6 +45,7 @@ namespace UI {
 			// Make pause menu and win screen start out as disabled.
 			pauseMenu.gameObject.SetActive(false);
 			winScreen.gameObject.SetActive(false);
+			gameOverScreen.gameObject.SetActive(false);
 
 			goalPanel.CreateList(GameManager.Instance.Goals);
 		}
@@ -99,6 +101,10 @@ namespace UI {
 			else {
 				winScreen.BindContinueToLevel(GameManager.Instance.NextLevel);
 			}
+		}
+
+		public void ShowGameOverScreen() {
+			gameOverScreen.gameObject.SetActive(true);
 		}
 
 		public Button GetButton(string name) {
