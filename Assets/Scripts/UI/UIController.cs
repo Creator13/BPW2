@@ -61,6 +61,10 @@ namespace UI {
 		}
 
 		public void ShowDialog(BaseTile obj, params TileActionButton[] buttons) {
+			ShowDialog(obj, null, buttons);
+		}
+
+		public void ShowDialog(BaseTile obj, string title, params TileActionButton[] buttons) {
 			// Show the tile popup dialog with the specified options on the specified tile
 			// Hide the old dialog first, if it exists.
 			if (dialog) {
@@ -72,7 +76,7 @@ namespace UI {
 
 			// If the tile was set, build the dialog up with this tile and with the buttons provided as parameters
 			if (obj) {
-				dialog.ShowDialog(obj, buttons);
+				dialog.ShowDialog(obj, title ?? "Choose action", buttons);
 			}
 		}
 

@@ -316,12 +316,12 @@ PrefabInstance:
     - target: {fileID: 2196471685560605405, guid: 3789312e4b81f25428a869ef8d68ef2d,
         type: 3}
       propertyPath: goals.Array.data[0].goal
-      value: 200
+      value: 220
       objectReference: {fileID: 0}
     - target: {fileID: 2196471685560605405, guid: 3789312e4b81f25428a869ef8d68ef2d,
         type: 3}
       propertyPath: goals.Array.data[0].seeds
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2196471685560605405, guid: 3789312e4b81f25428a869ef8d68ef2d,
         type: 3}

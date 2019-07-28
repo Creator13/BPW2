@@ -16,13 +16,15 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: e3d5faef680b62a4fa43c0d44ad49118, type: 3}
   button: {fileID: 2727988188636033242, guid: 1a7950275b110364aa80ffd88ef306f6, type: 3}
   seedIcon: {fileID: 0}
-  minYield: 25
-  germinationTime: 2
-  germinationChance: 0.8
+  minYield: 35
+  germinationTime: 15
+  germinationChance: 0.9
   growSpeed: 20
   growingChance: 0.8
   growthStages:
+  - {fileID: 321247539463768468, guid: 388cc6eb7e08786419471783f4a983da, type: 3}
   - {fileID: 1214932010090134320, guid: bd30a055ee57f92438cb12c721b79ccc, type: 3}
+  - {fileID: 3664759057732073183, guid: fbb371a6cde6e294a95538bb65f37fbc, type: 3}
   - {fileID: 4822606322251616840, guid: 8127e1c3131d33c4aa4416a4daa1b17d, type: 3}
   deadStage: {fileID: 0}
   harvestedStage: {fileID: 0}

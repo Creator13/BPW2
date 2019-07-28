@@ -33,8 +33,8 @@ namespace Tile {
 		public int ExpectedYield {
 			get {
 				// Return 0 if the tile is not either growing, seeded, or full grown
-				if (State == GrowableState.Seeded || 
-				    State == GrowableState.Growing || 
+				if (State == GrowableState.Seeded ||
+				    State == GrowableState.Growing ||
 				    State == GrowableState.FullGrown) {
 					return species.MinYield;
 				}
@@ -49,7 +49,7 @@ namespace Tile {
 			private set {
 				if (value == GrowableState.Tilled) {
 					RemoveExistingChildren();
-					
+
 					SetGroundTexture(tilledGround);
 				}
 				else if (value == GrowableState.Seeded) {
@@ -58,7 +58,7 @@ namespace Tile {
 				else if (value == GrowableState.Harvested) {
 					// Remove stages
 					RemoveExistingChildren();
-					
+
 					// If the species has a defined model for being harvested, set it
 					if (species.HarvestedStage) {
 						SetChildObject(species.HarvestedStage);
@@ -109,16 +109,17 @@ namespace Tile {
 
 		public override void OnClick() {
 			List<TileActionButton> buttons = new List<TileActionButton>();
+			string title = null;
 
 			// Show the convert to river button when in tilled, harvested or dead states
-			if (state == GrowableState.Tilled || state == GrowableState.Harvested || state == GrowableState.Dead) {
+			if (State == GrowableState.Tilled || State == GrowableState.Harvested || State == GrowableState.Dead) {
 				Button b = UIController.Instance.GetButton("RiverButton");
 				b.interactable = true;
-				
+
 				buttons.Add(new TileActionButton(b, ConvertToRiver));
 			}
-			
-			if (state == GrowableState.Tilled) {
+
+			if (State == GrowableState.Tilled) {
 				// Show species selection buttons
 				foreach (Species s in GameManager.Instance.Species) {
 					// Button is interactable if there are seeds available for this species
@@ -126,35 +127,41 @@ namespace Tile {
 
 					buttons.Add(new TileActionButton(s.Button, () => SetSpieces(s)));
 				}
+
+				title = "Plant species...";
 			}
-			else if (state == GrowableState.FullGrown || state == GrowableState.Growing) {
+			else if (State == GrowableState.FullGrown || State == GrowableState.Growing) {
 				// Show harvest button
 				Button b = UIController.Instance.GetButton("HarvestButton");
 				// Only interactable if fullgrown
-				b.interactable = state == GrowableState.FullGrown;
+				b.interactable = State == GrowableState.FullGrown;
 
 				buttons.Add(new TileActionButton(b, Harvest));
+
+				title = State == GrowableState.FullGrown ? "Harvest!" : "Growing...";
 			}
-			else if (state == GrowableState.Harvested || state == GrowableState.Dead) {
+			else if (State == GrowableState.Harvested || State == GrowableState.Dead) {
 				// Show retill/convert back to ground tile
 				Button b = UIController.Instance.GetButton("HoeButton");
 				b.interactable = true;
 
 				buttons.Add(new TileActionButton(b, ConvertToGrowable));
+
+				title = "Unusable terrain";
 			}
 			else {
 				return;
 			}
 
-			UIController.Instance.ShowDialog(this, buttons.ToArray());
+			UIController.Instance.ShowDialog(this, title, buttons.ToArray());
 		}
 
 		private void SetSpieces(Species species) {
 			// Use one seed to plant on this tile (and throw a little safeguard exception to avoid this function from
 			// being used in a wrong manner)
-			if (! GameManager.Instance.UseSeed(species)) 
+			if (!GameManager.Instance.UseSeed(species))
 				throw new InvalidOperationException("Shouldn't be setting a species when it has no seeds");
-			
+
 			this.species = species;
 
 			// Reset growth stage to -1, set the current state and set tile mesh accordingly
@@ -166,12 +173,12 @@ namespace Tile {
 
 		private IEnumerator WaitForGrowth() {
 			yield return new WaitForSeconds(species.GerminationTime);
-			
+
 			// Germination chance: multiply base chance by wetness. Increase wetness by taking square root and add base
 			// value (always higher than .25). Random value should be within the germination chance value
 			float chance = species.GerminationChance * Mathf.Sqrt(Mathf.Clamp(wetness + .25f, 0, 1));
 			Debug.Log("Germinating... chance: " + chance + " wetness: " + wetness);
-			
+
 			if (Random.value < chance) {
 				StartCoroutine(GrowingLoop());
 			}
@@ -206,13 +213,13 @@ namespace Tile {
 				throw new InvalidOperationException("Cannot harvest while the crop is not fully grown");
 
 			GameManager.Instance.RegisterHarvest(species, ExpectedYield);
-			
+
 			State = GrowableState.Harvested;
 		}
 
 		public override void OnHoverEnter(float hoverStrength) {
 			base.OnHoverEnter(hoverStrength);
-			
+
 			// Also apply hover on child objects of the growable spawn point
 			foreach (Transform t in spawnPoint.GetComponentsInChildren<Transform>()) {
 				// Exclude parent object
@@ -228,7 +235,7 @@ namespace Tile {
 
 		public override void OnHoverExit() {
 			base.OnHoverExit();
-			
+
 			// Remove hover on spawnpoint child objects
 			foreach (Transform t in spawnPoint.GetComponentsInChildren<Transform>()) {
 				// Exclude parent object
@@ -252,7 +259,7 @@ namespace Tile {
 
 		private void SetChildObject(GameObject obj) {
 			RemoveExistingChildren();
-			
+
 			// Instantiate the gameobject for the next growth stage
 			Instantiate(obj, spawnPoint);
 		}
