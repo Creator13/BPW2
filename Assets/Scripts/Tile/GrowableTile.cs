@@ -48,6 +48,8 @@ namespace Tile {
 			get => state;
 			private set {
 				if (value == GrowableState.Tilled) {
+					if (AudioController.Instance) AudioController.Instance.DiggingSound();
+					
 					RemoveExistingChildren();
 
 					SetGroundTexture(tilledGround);
@@ -56,6 +58,9 @@ namespace Tile {
 					SetGroundTexture(seededGround);
 				}
 				else if (value == GrowableState.Harvested) {
+					// PLay sound
+					if (AudioController.Instance) AudioController.Instance.HarvestSound();
+					
 					// Remove stages
 					RemoveExistingChildren();
 

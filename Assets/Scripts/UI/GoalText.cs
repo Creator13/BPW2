@@ -13,7 +13,7 @@ namespace UI {
 		public ExportGoal Goal {
 			set {
 				goal = value;
-				
+
 				// Set the text and the icon
 				UpdateValue();
 				speciesIcon.sprite = value.Species.Icon;
@@ -23,12 +23,15 @@ namespace UI {
 
 		public void UpdateValue() {
 			if (Goal.IsReached) {
-				// Update amount one last time
-				amountText.text = Goal.Current + "/" + Goal.Goal;
-				
 				// If the goal is reached, add strikethrough effect (if it wasn't already)
-				if (! amountText.text.Contains("<s>")) {
+				if (!amountText.text.Contains("<s>")) {
+					// Update amount one last time
+					amountText.text = Goal.Current + "/" + Goal.Goal;
+
 					amountText.text = "<s>" + amountText.text + "</s>";
+
+					// Play a sound when the goal is reached for the first time
+					if (AudioController.Instance) AudioController.Instance.DingSound();
 				}
 			}
 			else {

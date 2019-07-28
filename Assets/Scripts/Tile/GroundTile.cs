@@ -79,6 +79,9 @@ namespace Tile {
 					// Build and replace a new river tile and register it to the source.
 					RiverTile riverTile = Grid.ReplaceTile(this, Grid.RiverTilePrefab) as RiverTile;
 					Grid.Source.AddRiver(riverTile);
+					
+					// Play audio
+					if (AudioController.Instance) AudioController.Instance.WaterSound();
 				}
 			}
 		}

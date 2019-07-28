@@ -302,12 +302,12 @@ PrefabInstance:
     - target: {fileID: 710691228046816381, guid: 934899e0b1d1cb8459e5db4a30ef601f,
         type: 3}
       propertyPath: gridSizeX
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 710691228046816381, guid: 934899e0b1d1cb8459e5db4a30ef601f,
         type: 3}
       propertyPath: gridSizeZ
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 710691228046816380, guid: 934899e0b1d1cb8459e5db4a30ef601f,
         type: 3}
@@ -373,6 +373,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8575249254676893657, guid: cb850e45e0d870240a406e7a92c5b909,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5991181445758116904, guid: cb850e45e0d870240a406e7a92c5b909,
         type: 3}
       propertyPath: m_Name
