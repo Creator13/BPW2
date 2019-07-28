@@ -11,6 +11,7 @@ namespace Growable {
 		private int current;
 		public int Current {
 			set {
+				// Current value can currently be only between 0 and the goal value
 				if (! IsReached) current = Mathf.Clamp(value, 0, goal);
 			}
 			get => current;

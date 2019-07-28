@@ -12,8 +12,10 @@ namespace UI {
 
 		[SerializeField] private TileDialog dialogPrefab;
 		[SerializeField] private TextMeshProUGUI waterText;
-		[SerializeField] private RectTransform pauseMenu;
 		[SerializeField] private GoalPanel goalPanel;
+
+		[Space(10)] [SerializeField] private RectTransform pauseMenu;
+		[SerializeField] private WinScreen winScreen;
 
 		[Space(10)] [SerializeField] private TileGrid grid;
 
@@ -39,9 +41,10 @@ namespace UI {
 			// Load required components
 			canvas = GetComponent<Canvas>();
 
-			// Make pausemenu start out as disabled.
+			// Make pause menu and win screen start out as disabled.
 			pauseMenu.gameObject.SetActive(false);
-			
+			winScreen.gameObject.SetActive(false);
+
 			goalPanel.CreateList(GameManager.Instance.Goals);
 		}
 
@@ -51,7 +54,7 @@ namespace UI {
 
 			// Update water availability text
 			waterText.text = "Water left: " + grid.Source.AvailableRivers;
-			
+
 			goalPanel.UpdateList();
 		}
 
@@ -83,6 +86,19 @@ namespace UI {
 
 		public void ShowPauseMenu(bool show) {
 			pauseMenu.gameObject.SetActive(show);
+		}
+
+		public void ShowWinScreen(bool isLastLevel) {
+			winScreen.gameObject.SetActive(true);
+			
+			// Bind the continue button either to the next level as defined in the GameManager or to the main menu if
+			// this is the last level
+			if (isLastLevel) {
+				winScreen.SetLastLevel();
+			}
+			else {
+				winScreen.BindContinueToLevel(GameManager.Instance.NextLevel);
+			}
 		}
 
 		public Button GetButton(string name) {

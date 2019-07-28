@@ -40,7 +40,10 @@ public class MouseHandler : MonoBehaviour {
 		// Make UI (current dialogs) block raycast.
 		if (!EventSystem.current.IsPointerOverGameObject()) {
 			// Raycast from mouse position
-			if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out RaycastHit hoverHitInfo)) {
+			Vector3 start = cam.ScreenPointToRay(Input.mousePosition).origin;
+			Vector3 dir = cam.ScreenPointToRay(Input.mousePosition).direction;
+			Debug.DrawLine(start, start + (dir * 10), Color.green);
+			if (Physics.Raycast(start, dir, out RaycastHit hoverHitInfo)) {
 				BaseTile hover = hoverHitInfo.collider.GetComponent<BaseTile>();
 
 				// Set the current hover object to the object that was hit (if not tile was hit, the value will be null)
