@@ -14,7 +14,8 @@ namespace Growable {
 		[SerializeField] private Sprite seedIcon;
 		public Sprite SeedIcon => seedIcon;
 
-		[Space(10)] [SerializeField] private int maxYield;
+		[Space(10)] [SerializeField] private int minYield;
+		public int MinYield => minYield;
 
 		[Space(10), SerializeField] private float germinationTime;
 		public float GerminationTime => germinationTime;

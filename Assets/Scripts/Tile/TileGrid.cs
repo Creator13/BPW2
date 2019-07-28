@@ -43,6 +43,7 @@ namespace Tile {
 			Generate();
 
 			// Set camera position to center of grid.
+			// TODO move this code to the camera where it belongs
 			Vector3 currentCamPos = mainCamera.transform.position;
 			mainCamera.transform.position = new Vector3((float) (transform.position.x + gridSizeX / 2.0 * tileSize), currentCamPos.y, currentCamPos.z);
 		}
@@ -132,6 +133,10 @@ namespace Tile {
 			return pos + transform.position;
 		}
 
+		public IEnumerable<T> GetTiles<T>() {
+			return grid.OfType<T>();
+		}
+		
 		private IEnumerable<BaseTile> GetSurroundingTiles(int x, int z) {
 			List<BaseTile> tiles = new List<BaseTile>();
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Growable;
+using Tile;
 using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,8 +9,17 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour {
 	public static GameManager Instance;
 
-//	[SerializeField] private Species[] species;
-	[SerializeField] private List<ExportGoal> goals;
+	[SerializeField] private TileGrid grid;
+
+	[Space(10)] [SerializeField] private string nextLevel;
+	public string NextLevel => nextLevel;
+
+	[SerializeField] private string mainMenuScene;
+	public string MainMenuScene => mainMenuScene;
+
+	[SerializeField] private bool isLastLevel;
+	
+	[Space(10)] [SerializeField] private List<ExportGoal> goals;
 	public List<ExportGoal> Goals => goals;
 	public Species[] Species {
 		get {
@@ -20,15 +30,7 @@ public class GameManager : MonoBehaviour {
 			return s.ToArray();
 		}
 	}
-
-	[Space(10)] [SerializeField] private string nextLevel;
-	public string NextLevel => nextLevel;
 	
-	[SerializeField] private string mainMenuScene;
-	public string MainMenuScene => mainMenuScene;
-
-	[SerializeField] private bool isLastLevel;
-
 	private bool paused;
 	public bool Paused {
 		get => paused;
@@ -58,7 +60,7 @@ public class GameManager : MonoBehaviour {
 			won = value;
 		}
 	}
-	
+
 	private bool lost;
 	public bool Lost {
 		get => lost;
@@ -76,6 +78,7 @@ public class GameManager : MonoBehaviour {
 
 	// Check if there are still any elements in the goals list where the goal is not reached
 	private bool AllGoalsReached => !Goals.Any(goal => !goal.IsReached);
+
 	// Check if there are still any elements in the goals list where the number of seeds is higher than 0, then there
 	// are seeds left
 	private bool HasSeedsLeft => goals.Any(goal => goal.Seeds > 0);
@@ -83,7 +86,7 @@ public class GameManager : MonoBehaviour {
 	private void Awake() {
 		// When the game is won, the global timeScale is set to 0. So change it back to 1 once a scene loads.
 		Time.timeScale = 1;
-		
+
 		// Initialize singleton
 		Instance = this;
 	}
@@ -107,9 +110,27 @@ public class GameManager : MonoBehaviour {
 			Won = true;
 		}
 		else if (!HasSeedsLeft) {
-			// TODO !!! add a check if there is currently enough yield on the map VERY IMPORTANT
-			Lost = true;
+			// Player has lost when he's out of seeds and the map can't yield enough anymore
+			if (!GridHasEnoughYield()) Lost = true;
 		}
+	}
+
+	private bool GridHasEnoughYield() {
+		List<GrowableTile> growables = new List<GrowableTile>(grid.GetTiles<GrowableTile>());
+
+		// Check for each goal if there is enough yield available by counting the number of tiles with that species planted (either seeded, growing or full-grown) and 
+		foreach (ExportGoal goal in goals) {
+			// Add together the expected yield values for all tiles with this species planted
+			int availableYield = growables.Where(tile => tile.Species == goal.Species).Sum(tile => tile.ExpectedYield);
+
+			int yieldToGoal = goal.Goal - goal.Current;
+
+			if (yieldToGoal > availableYield) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	public void RegisterHarvest(Species s, int amt) {
@@ -121,17 +142,17 @@ public class GameManager : MonoBehaviour {
 		// Find if the goals list has a goal for the species s with seeds available
 		return goals.Any(goal => goal.Species == s && goal.Seeds > 0);
 	}
-	
+
 	public bool UseSeed(Species s) {
 		bool hasSeed = HasSeed(s);
-		
+
 		if (hasSeed) {
 			goals.Find(goal => goal.Species == s).Seeds--;
 		}
 
 		return hasSeed;
 	}
-	
+
 	public void Exit() {
 		Application.Quit();
 	}

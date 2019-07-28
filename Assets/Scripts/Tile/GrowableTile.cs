@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 namespace Tile {
 	[RequireComponent(typeof(MeshRenderer)), RequireComponent(typeof(MeshFilter))]
 	public class GrowableTile : GroundTile {
-		private enum GrowableState {
+		public enum GrowableState {
 			Tilled,
 			Seeded,
 			Growing,
@@ -27,11 +27,26 @@ namespace Tile {
 
 		// Species may be null when in state Tilled or Harvested
 		[SerializeField] private Species species;
+		public Species Species => species;
+
+		// TODO implement different yield values
+		public int ExpectedYield {
+			get {
+				// Return 0 if the tile is not either growing, seeded, or full grown
+				if (State == GrowableState.Seeded || 
+				    State == GrowableState.Growing || 
+				    State == GrowableState.FullGrown) {
+					return species.MinYield;
+				}
+
+				return 0;
+			}
+		}
 
 		[SerializeField] private GrowableState state;
-		private GrowableState State {
+		public GrowableState State {
 			get => state;
-			set {
+			private set {
 				if (value == GrowableState.Tilled) {
 					RemoveExistingChildren();
 					
@@ -188,10 +203,10 @@ namespace Tile {
 			// TODO allow harvesting for less yield while growing
 			if (State != GrowableState.FullGrown)
 				throw new InvalidOperationException("Cannot harvest while the crop is not fully grown");
+
+			GameManager.Instance.RegisterHarvest(species, ExpectedYield);
 			
 			State = GrowableState.Harvested;
-
-			GameManager.Instance.RegisterHarvest(species, 50);
 		}
 
 		public override void OnHoverEnter(float hoverStrength) {
