@@ -118,13 +118,14 @@ public class GameManager : MonoBehaviour {
 	private bool GridHasEnoughYield() {
 		List<GrowableTile> growables = new List<GrowableTile>(grid.GetTiles<GrowableTile>());
 
-		// Check for each goal if there is enough yield available by counting the number of tiles with that species planted (either seeded, growing or full-grown) and 
 		foreach (ExportGoal goal in goals) {
 			// Add together the expected yield values for all tiles with this species planted
 			int availableYield = growables.Where(tile => tile.Species == goal.Species).Sum(tile => tile.ExpectedYield);
 
+			// Calculate the yield needed to reach this goal
 			int yieldToGoal = goal.Goal - goal.Current;
 
+			// If this goal can't be reached, the level can no longer be won so return false
 			if (yieldToGoal > availableYield) {
 				return false;
 			}

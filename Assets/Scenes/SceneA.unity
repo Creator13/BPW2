@@ -182,8 +182,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2196471685560605405, guid: 3789312e4b81f25428a869ef8d68ef2d,
         type: 3}
-      propertyPath: mainMenuScene
-      value: MainMenu
+      propertyPath: goals.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2196471685560605405, guid: 3789312e4b81f25428a869ef8d68ef2d,
         type: 3}
@@ -200,6 +200,17 @@ PrefabInstance:
       propertyPath: grid
       value: 
       objectReference: {fileID: 514910318}
+    - target: {fileID: 2196471685560605405, guid: 3789312e4b81f25428a869ef8d68ef2d,
+        type: 3}
+      propertyPath: goals.Array.data[0].species
+      value: 
+      objectReference: {fileID: 11400000, guid: 0a72d9a356eb86f48969b7cb31036a25,
+        type: 2}
+    - target: {fileID: 2196471685560605405, guid: 3789312e4b81f25428a869ef8d68ef2d,
+        type: 3}
+      propertyPath: goals.Array.data[0].goal
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 2196471685560605404, guid: 3789312e4b81f25428a869ef8d68ef2d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -954,12 +965,12 @@ PrefabInstance:
     - target: {fileID: 710691228046816381, guid: 934899e0b1d1cb8459e5db4a30ef601f,
         type: 3}
       propertyPath: gridSizeX
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 710691228046816381, guid: 934899e0b1d1cb8459e5db4a30ef601f,
         type: 3}
       propertyPath: gridSizeZ
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 710691228046816380, guid: 934899e0b1d1cb8459e5db4a30ef601f,
         type: 3}

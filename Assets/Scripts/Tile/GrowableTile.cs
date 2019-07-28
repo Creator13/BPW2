@@ -127,10 +127,11 @@ namespace Tile {
 					buttons.Add(new TileActionButton(s.Button, () => SetSpieces(s)));
 				}
 			}
-			else if (state == GrowableState.FullGrown) {
+			else if (state == GrowableState.FullGrown || state == GrowableState.Growing) {
 				// Show harvest button
 				Button b = UIController.Instance.GetButton("HarvestButton");
-				b.interactable = true;
+				// Only interactable if fullgrown
+				b.interactable = state == GrowableState.FullGrown;
 
 				buttons.Add(new TileActionButton(b, Harvest));
 			}

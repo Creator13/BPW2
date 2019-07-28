@@ -43,9 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5787a1a67493514c9fc5627a2fdb2f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goals:
-  - species: {fileID: 11400000, guid: 0a72d9a356eb86f48969b7cb31036a25, type: 2}
-    goal: 200
+  grid: {fileID: 0}
   nextLevel: 
   mainMenuScene: MainMenu
   isLastLevel: 0
+  goals: []
