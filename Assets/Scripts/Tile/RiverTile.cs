@@ -5,6 +5,8 @@ using UI;
 using UnityEngine;
 
 namespace Tile {
+	[RequireComponent(typeof(MeshFilter))]
+	[RequireComponent(typeof(MeshCollider))]
 	public class RiverTile : BaseTile {
 		private enum RiverShapes {
 			End,
@@ -14,7 +16,7 @@ namespace Tile {
 			Split4
 		}
 
-		private enum RiverDirections {
+		public enum RiverDirections {
 			North = 0,
 			East = 90,
 			South = 180,
@@ -28,10 +30,10 @@ namespace Tile {
 		[SerializeField] private Mesh split4;
 
 		private MeshFilter mf;
-		
+
 		private RiverDirections dir;
 		private RiverShapes shape;
-		
+
 		private void OnEnable() {
 			mf = GetComponent<MeshFilter>();
 		}
@@ -44,7 +46,7 @@ namespace Tile {
 			UpdateSurroundingRiverDirection();
 			// When the tile is placed, update the water level for all surrounding ground/growable tiles
 			UpdateSurroundingGroundWaterLevels();
-			
+
 			// Set the ground color to the wet color
 			SetColor(Grid.WetColor, "Ground");
 		}
@@ -56,17 +58,20 @@ namespace Tile {
 				tile.UpdateWaterAvailability();
 			}
 		}
-		
+
 		private void UpdateSurroundingRiverDirection() {
 			// Get all the surrounding tiles and update their direction, to make the connection both ways.
 			List<RiverTile> tiles = new List<RiverTile>(Grid.GetSurroundingTiles<RiverTile>(this));
 			tiles.ForEach(t => t.UpdateTileDirection());
+
+			List<SourceTile> sTiles = new List<SourceTile>(Grid.GetSurroundingTiles<SourceTile>(this));
+			sTiles.ForEach(t => t.UpdateTileDirection());
 		}
 
 		private void UpdateTileDirection() {
 			List<BaseTile> tiles = new List<BaseTile>(Grid.GetSurroundingTiles(this));
 			// Get all the water tiles (all the tiles a river can connect to)
-			List<BaseTile> waters = new List<BaseTile>(tiles.Where(t => 
+			List<BaseTile> waters = new List<BaseTile>(tiles.Where(t =>
 				t.GetType() == typeof(RiverTile) || t.GetType() == typeof(SourceTile)
 			));
 			int surroundingRivers = waters.Count;
@@ -196,7 +201,7 @@ namespace Tile {
 			// Change the mesh
 			mf.mesh = mesh;
 			GetComponent<MeshCollider>().sharedMesh = mesh;
-			
+
 			// Apply the rotation
 			transform.localRotation = Quaternion.Euler(0, (float) dir, 0);
 		}

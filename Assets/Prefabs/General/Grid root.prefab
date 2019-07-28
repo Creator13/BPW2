@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundTilePrefab: {fileID: 5110496366199137348, guid: bd61bcff77be25b48a4da04a9a9c4c71,
     type: 3}
-  sourceTilePrefab: {fileID: 5927937490616690058, guid: d0f547544d7b8dc41b642c3cf2f9f6aa,
+  sourceTilePrefab: {fileID: 6668390090514034259, guid: 02f9938132b68a746b5d655599566f51,
     type: 3}
   riverTilePrefab: {fileID: 4810701380805502742, guid: 988ba2c4785eb47408cd97500750d704,
     type: 3}
